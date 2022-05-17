@@ -19,7 +19,7 @@ public enum PatternQuestions {
     BOLD(Utils::patternQuestionsBold, null, "Bold", null),
     ITALIC(Utils::patternQuestionsItalic, null, "Курсив", null),
     UNDERLINE(Utils::patternQuestionsUnderline, null, "Подчеркивание", null),
-    HIGHLIGHTING(Utils::patternQuestionsUnderline, null, "Выделение", null);
+    HIGHLIGHTING(Utils::patternQuestionsHighlighting, null, "Выделение", null);
 
     public final BiFunction<XWPFParagraph, Pattern, PatternQuestions> function;
     public final String value;

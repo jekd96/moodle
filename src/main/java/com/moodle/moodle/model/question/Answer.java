@@ -15,13 +15,12 @@ import java.util.List;
 @Data
 public class Answer extends FormatTextValue {
 
+    @JacksonXmlProperty(isAttribute = true)
+    private Integer fraction;
+
     private FormatTextValue feedback;
 
     @JsonIgnore
     private List<PatternQuestions> patternQuestions;
 
-    @JacksonXmlProperty(isAttribute = true, localName = "fraction")
-    public Integer getFraction() {
-        return patternQuestions != null && patternQuestions.size() > 1 ? 100 : 0;
-    }
 }

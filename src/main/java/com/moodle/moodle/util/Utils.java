@@ -57,6 +57,10 @@ public class Utils {
         return ! paragraph.getRuns().get(0).getUnderline().equals(UnderlinePatterns.NONE) ? PatternQuestions.UNDERLINE : null;
     }
 
+    public static PatternQuestions patternQuestionsHighlighting(XWPFParagraph paragraph, Pattern pattern) {
+        return paragraph.getRuns().get(0).isHighlighted() ? PatternQuestions.HIGHLIGHTING : null;
+    }
+
     public static PatternQuestions patternQuestions(XWPFParagraph paragraph, Pattern pattern, PatternQuestions returnValue) {
         if (paragraph.getText() != null) {
             return pattern.matcher(paragraph.getText().trim()).find() ? returnValue : null;

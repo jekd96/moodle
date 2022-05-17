@@ -5,12 +5,15 @@ import com.moodle.moodle.model.PatternQuestions;
 import com.moodle.moodle.service.GenerateXmlService;
 import com.moodle.moodle.ui.VerticalLayout;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -20,15 +23,11 @@ public class MoodleApplication  extends JFrame {
 
 	@Autowired
 	private GenerateXmlService generateXmlService;
-
-
-
 	private String officeFilePath;
 	private String xmlFilePath;
 	private PatternQuestions questionPattern = PatternQuestions.POINT;
 
 	public MoodleApplication() {
-
 		initUI();
 	}
 
@@ -38,6 +37,14 @@ public class MoodleApplication  extends JFrame {
 		flow.setLayout(new VerticalLayout());
 
 		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filterDocx = new FileNameExtensionFilter(
+				"Word", "docx");
+
+		FileNameExtensionFilter filterXml = new FileNameExtensionFilter(
+				"Xml", "xml");
+
+		fileChooser.setAcceptAllFileFilterUsed(false);
+
 
 		var btnOpenDir = new JButton("Открыть файл");
 		btnOpenDir.setMinimumSize(new Dimension(30, 50));
@@ -50,6 +57,8 @@ public class MoodleApplication  extends JFrame {
 		btnOpenDir.addActionListener(e -> {
 			fileChooser.setDialogTitle("Выбор директории");
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fileChooser.setFileFilter(filterDocx);
+
 			int result = fileChooser.showOpenDialog(MoodleApplication.this);
 			if (result == JFileChooser.APPROVE_OPTION ) {
 				officeFilePath = fileChooser.getSelectedFile().getPath();
@@ -63,6 +72,11 @@ public class MoodleApplication  extends JFrame {
 		btnSaveFile.addActionListener(e -> {
 			fileChooser.setDialogTitle("Сохранение файла");
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fileChooser.setFileFilter(filterXml);
+			fileChooser.setSelectedFile(
+					new File(FilenameUtils.removeExtension(new File(officeFilePath).getName()) + ".xml")
+			);
+
 			int result = fileChooser.showSaveDialog(MoodleApplication.this);
 			if (result == JFileChooser.APPROVE_OPTION ) {
 				xmlFilePath = fileChooser.getSelectedFile().getPath();

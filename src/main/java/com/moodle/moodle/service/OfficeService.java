@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,11 +100,16 @@ public class OfficeService {
                     throw new NoAnswerQuestionException(question, new Exception());
                 }
             }
+            setFraction(resultQuestions);
             return resultQuestions;
         }
     }
 
-
+    private void setFraction(List<Question> questions) {
+        for (Question question : questions) {
+            question.getAnswers().stream().max(Comparator.comparingInt(o -> o.getPatternQuestions().size())).ifPresent(answer -> answer.setFraction(100));
+        }
+    }
 
     private List<PatternQuestions> getParseQuestionTypes(XWPFParagraph paragraph) {
         List<PatternQuestions> patternQuestions = new ArrayList<>();
