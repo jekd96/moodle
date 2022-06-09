@@ -4,6 +4,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Элемент текстово значения с атрибутом @format
+ */
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor

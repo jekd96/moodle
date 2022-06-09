@@ -6,9 +6,15 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Класс для общей конфигурации приложения
+ */
 @Configuration
 public class AppConfiguration {
 
+    /**
+     * @return Возвращает настроенный маппер для сереализации и дересереализации xml
+     */
     @Bean
     public XmlMapper xmlMapper() {
 

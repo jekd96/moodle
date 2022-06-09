@@ -8,6 +8,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Модель вопроса
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)

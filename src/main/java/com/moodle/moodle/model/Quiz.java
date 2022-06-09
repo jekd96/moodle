@@ -8,6 +8,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Класс контейнер которые муддла который хранит в себе вопросы
+ */
 @JacksonXmlRootElement(localName = "quiz")
 @AllArgsConstructor
 @NoArgsConstructor

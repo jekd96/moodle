@@ -2,6 +2,9 @@ package com.moodle.moodle.ui;
 
 import java.awt.*;
 
+/**
+ * Самопинсый ui контейнер для вертикального отображения
+ */
 public class VerticalLayout implements LayoutManager
 {
     private Dimension size = new Dimension();

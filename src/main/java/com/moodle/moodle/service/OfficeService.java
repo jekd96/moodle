@@ -22,16 +22,27 @@ import java.util.stream.Collectors;
 
 import static com.moodle.moodle.model.PatternQuestions.*;
 
+/**
+ * Класс занимается чтение docx документа и парсинга его в модель Question (Вопросов)
+ */
 @Slf4j
 @Service
 public class OfficeService {
 
 
+    /**
+     * Метод для чтения и парсинга документа в модель Question
+     * @param path Путь в docx документу
+     * @param patternQuestions Формат вопроса
+     * @return Возвращает коллекцию вопросов которые распарсились из docx документа
+     * @throws IOException ошибка при чтении docx документа
+     * @throws CommonException ошибка при папрсинга документа
+     */
     public List<Question> readAndParseDocument(String path, PatternQuestions patternQuestions) throws IOException, CommonException {
         try (XWPFDocument doc = new XWPFDocument(
                 Files.newInputStream(Paths.get(path)))) {
             List<Question> questions = new ArrayList<>();
-            Question currentQuestion;
+            Question currentQuestion = null;
             List<Answer> currentAnswers = new ArrayList<>();
             for (XWPFParagraph paragraph : doc.getParagraphs()) {
                 String row = paragraph.getText();
@@ -45,7 +56,7 @@ public class OfficeService {
                 }
                 PatternQuestions pattern = patters.get(0);
                 String replaceText;
-                if (pattern == BOLD || pattern == ITALIC || pattern == UNDERLINE || pattern == LIST_QUESTION_WORD) {
+                if (pattern == BOLD || pattern == ITALIC || pattern == UNDERLINE || pattern == LIST_QUESTION_WORD || pattern == HIGHLIGHTING) {
                     replaceText = row;
                 } else {
                     try {
@@ -62,7 +73,7 @@ public class OfficeService {
                 }
 
                 if (pattern == patternQuestions) {
-                    if (patternQuestions == BOLD || patternQuestions == ITALIC || patternQuestions == UNDERLINE) {
+                    if (patternQuestions == BOLD || patternQuestions == ITALIC || patternQuestions == UNDERLINE || pattern == HIGHLIGHTING) {
                         currentQuestion = Utils.quizBuilder(row, row);
                     } else {
                         currentQuestion = Utils.quizBuilder(replaceText, replaceText);
@@ -72,7 +83,7 @@ public class OfficeService {
                     questions.add(currentQuestion);
                 } else {
 
-                    if (pattern == BOLD || pattern == ITALIC || pattern == UNDERLINE) {
+                    if (pattern == BOLD || pattern == ITALIC || pattern == UNDERLINE || pattern == HIGHLIGHTING) {
                         Answer itemAnswer = Answer.builder()
                                 .text(row)
                                 .fraction(0)
@@ -105,12 +116,22 @@ public class OfficeService {
         }
     }
 
+    /**
+     * Проставляет правильные ответы у вопросов
+     * @param questions Список вопросов
+     */
     private void setFraction(List<Question> questions) {
         for (Question question : questions) {
             question.getAnswers().stream().max(Comparator.comparingInt(o -> o.getPatternQuestions().size())).ifPresent(answer -> answer.setFraction(100));
         }
     }
 
+    /**
+     * Вспомогательный метод которые возвращает из строки список паттернов регулярных выражений и стилей которые
+     * использовались в этой строке
+     * @param paragraph Принимает параграф из doc документа
+     * @return Возвращает список паттернов, которые использованы в этом параграфе
+     */
     private List<PatternQuestions> getParseQuestionTypes(XWPFParagraph paragraph) {
         List<PatternQuestions> patternQuestions = new ArrayList<>();
         for (PatternQuestions value : PatternQuestions.values()) {

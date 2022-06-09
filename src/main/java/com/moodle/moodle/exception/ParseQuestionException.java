@@ -2,6 +2,9 @@ package com.moodle.moodle.exception;
 
 import lombok.Getter;
 
+/**
+ * Эксепшен парсинга
+ */
 @Getter
 public class ParseQuestionException extends CommonException {
 

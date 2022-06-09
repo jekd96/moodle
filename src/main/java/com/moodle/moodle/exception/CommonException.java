@@ -2,6 +2,9 @@ package com.moodle.moodle.exception;
 
 import lombok.Getter;
 
+/**
+ * Общий эксепшен приложения
+ */
 @Getter
 public class CommonException extends Exception {
 

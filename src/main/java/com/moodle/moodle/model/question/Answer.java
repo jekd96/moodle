@@ -8,6 +8,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+/**
+ * Модель ответа
+ */
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
